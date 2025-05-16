@@ -118,7 +118,7 @@ router.post('/login', async (req, res) => {
             //password does match
             //create token   
             const payload = { username: username };
-            const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, username, { expiresIn: '1h' });
+            const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         const userWithoutPassword = await User.findOne({ username }, { password: 0 });
             //remove password from user object

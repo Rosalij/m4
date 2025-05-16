@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
     }  
     req.author = decoded.username; // Attach the decoded token to the request object
  // Make sure this exists in token payload
-   console.log(req.author)
+   
     next(); 
   });
 }
