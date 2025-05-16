@@ -5,12 +5,16 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
-const jsonwebtoken = require('jsonwebtoken');
+const authenticateToken = require('./authToken.js');
 
-
+const mongoose = require('mongoose');
+//MongoDB connection via Mongoose   
+mongoose.connect(process.env.DATABASE, {
+})  
+.then(() => console.log("MongoDB database connected"))
+.catch((err) => console.error("MongoDB connection error:", err));
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -28,21 +32,6 @@ app.get('/api/protected', authenticateToken, (req, res) => {
   res.json({ message: 'This is a protected route' });
 });
 
-//validate token middleware
-async function authenticateToken(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-  console.log("Token:", token); 
-  if (!token) return res.status(401).json({ message: "No token provided" });
-
-  try {
-    const decoded = await jsonwebtoken.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.name;
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
-  }
-};
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
