@@ -1,10 +1,11 @@
 /**
- * Applikation för moment 3 i Backend-utveckling Mittuniversitetet
+ * Applikation för moment 4 i Backend-utveckling Mittuniversitetet
  * Rosali Johansson
  */
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const authRoutes = require('./routes/authRoutes');
 require('dotenv').config();
 const jsonwebtoken = require('jsonwebtoken');
@@ -27,7 +28,7 @@ app.get('/api/protected', authenticateToken, (req, res) => {
   res.json({ message: 'This is a protected route' });
 });
 
-//validate token 
+//validate token middleware
 async function authenticateToken(req, res, next) {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
@@ -36,7 +37,7 @@ async function authenticateToken(req, res, next) {
 
   try {
     const decoded = await jsonwebtoken.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.username;
+    req.user = decoded.name;
     next();
   } catch (err) {
     return res.status(403).json({ message: "Invalid token" });
