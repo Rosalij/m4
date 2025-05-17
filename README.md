@@ -1,6 +1,6 @@
 # Applikation för Moment 4 
 
-Detta repository innehåller kod för ett enklare REST API byggt med Express. APIet är byggt för att hantera en enklare webbplats för att skapa inlägg, till exempel en gästbok där inloggning krävs för att skriva i gästboken. API:et använder autentisering med jsonwebtoken för att komma åt skyddade router vid inloggning, jsonwebtoken lagrar även username i payload.
+Detta repository innehåller kod för ett enklare REST API byggt med Express. APIet är byggt för att hantera en enklare webbplats för att skapa inlägg, till exempel en gästbok där inloggning krävs för att skriva i gästboken. API:et använder auktorisering med jsonwebtoken för att komma åt skyddade router vid inloggning, jsonwebtoken lagrar även username i payload.
 token kan sedan sparas i frontend-applikation för autentisering.
 Grundläggande funktionalitet för CRUD (Create, Read, Update, Delete) är implementerad.
 
