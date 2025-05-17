@@ -13,19 +13,22 @@ const authenticateToken = require('../authToken.js');
 
 
 
-
+//get all posts
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find();
-        res.status(200).json( posts );
+        res.status(200).json(posts);
     }
     catch (error) {
         res.status(500).json({ error: "Server error" });
     }
 });
 
+//store a new post
+//protected route with authenticateToken middleware
 router.post('/newpost', authenticateToken, async (req, res) => {
     try {
+        //get data from request
         const textinput = req.body.textinput;
         const author = req.author;
         //validate input
@@ -33,13 +36,15 @@ router.post('/newpost', authenticateToken, async (req, res) => {
             return res.status(400).json({ error: " textinput is required" });
         }
 
-        const newPost = new Post({  
+        const newPost = new Post({
             author: author,
             textinput
         });
 
-console.log("req.user:", req.user);
 
+        console.log("req.user:", req.user);
+
+        //save post to database
         await newPost.save();
         res.status(201).json({ message: "Post created successfully" });
     } catch (error) {
@@ -48,22 +53,24 @@ console.log("req.user:", req.user);
     }
 });
 
+//get all users
 router.get('/users', async (req, res) => {
     try {
         const users = await User.find();
-     res.status(200).json( users );
-        
+        res.status(200).json(users);
+
     }
-    catch(error) {
-      res.status(500).json({ error: "Server error" });
+    catch (error) {
+        res.status(500).json({ error: "Server error" });
     }
 });
 
 
 
-
+//store a new user
 router.post('/register', async (req, res) => {
     try {
+        //get data from request
         const { username, password } = req.body;
         //validate input
         if (!username || !password) {
@@ -73,18 +80,21 @@ router.post('/register', async (req, res) => {
         //check if user already exists
         const existingUser = await User.findOne({ username });
         if (existingUser) {
+            //user already exists
             return res.status(400).json({ error: "Username already exists" });
         }
 
+        //hash password with bcrypt
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
 
         //create new user   
         const newUser = new User({
-            username,
+            username: username,
             password: hashedPassword
         });
-
+        e
+        //save user to database 
         await newUser.save();
         res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
@@ -119,10 +129,10 @@ router.post('/login', async (req, res) => {
             //create token   
             const payload = { username: username };
             const token = jsonwebtoken.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        const userWithoutPassword = await User.findOne({ username }, { password: 0 });
             //remove password from user object
+            const userWithoutPassword = await User.findOne({ username }, { password: 0 });
 
+            //send response with token
             const response = {
                 message: "user logged in successfully",
                 user: userWithoutPassword,
@@ -137,6 +147,5 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ error: "server error" });
     }
 });
-
-
+ 
 module.exports = router;

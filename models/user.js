@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 
 //mongodb user schema
+//this schema is used to store users in the database
 const userSchema = new mongoose.Schema({
   username: {
     type: String,

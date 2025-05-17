@@ -1,6 +1,8 @@
 
 const mongoose = require('mongoose');
 
+//mongodb post schema
+//this schema is used to store posts made by users
 const postSchema = new mongoose.Schema({
  author: {
     type: String,   
