@@ -9,7 +9,7 @@ const jsonwebtoken = require('jsonwebtoken');
 const User = require('../models/user.js');
 const Post = require('../models/post.js');
 const authenticateToken = require('../authToken.js');
-const { text } = require('body-parser');
+
 
 
 
@@ -17,7 +17,7 @@ const { text } = require('body-parser');
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find();
-        res.status(200).json({"This is all the posts": posts});
+        res.status(200).json( posts );
     }
     catch (error) {
         res.status(500).json({ error: "Server error" });
@@ -51,7 +51,7 @@ console.log("req.user:", req.user);
 router.get('/users', async (req, res) => {
     try {
         const users = await User.find();
-     res.status(200).json({ "This is all the users": users });
+     res.status(200).json( users );
         
     }
     catch(error) {
